@@ -26,12 +26,16 @@ class MontyCli:
                 self.register_argument(extension.namespace, alias)
 
     def register_argument(self, argument, namespace):
+        print "Namespace registered", namespace
         self.argument_map[argument] = namespace
 
     def route(self):
-        arg = sys.argv.pop()
+        try:
+            arg = sys.argv[1] or None
+        except IndexError:
+            arg = None
 
-        if arg in self.extensions:
-            return self.extensions[arg].route()
+        if arg and arg in self.extensions:
+            return self.extensions[arg].route(sys.argv[2:])
 
-        self.extensions[self.fallback_extension].route()
+        self.extensions[self.fallback_extension].route(sys.argv[2:])
