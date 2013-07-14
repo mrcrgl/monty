@@ -2,7 +2,6 @@ from monty.extension.basic import BasicExtension
 from monty.client.montysheart import MontysHeartClient
 from monty.config.loader import get_user_cfg
 from monty.cli.stream import *
-import getpass
 
 
 class MontyCliExtension(BasicExtension):

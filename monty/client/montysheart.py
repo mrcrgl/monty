@@ -29,3 +29,13 @@ class MontysHeartClient(RestfulClient):
 
     def get_user(self, email):
         path = '/user/'+email
+
+    def package_verify(self, params):
+        path = '/py/package/verify'
+        success = self.put(path, params=params)
+        return success
+
+    def package_commit(self, params):
+        path = '/py/package/commit'
+        success = self.put(path, params=params)
+        return success

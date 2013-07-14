@@ -12,9 +12,15 @@ def get_cfg(name):
     except:
         raise NotImplementedError
 
+
 def get_user_cfg():
     from user import UserConfig
     return load_cfg('user', UserConfig)
+
+
+def get_package_cfg():
+    from package import PackageConfig
+    return load_cfg('package', PackageConfig)
 
 
 def get_api_cfg():
