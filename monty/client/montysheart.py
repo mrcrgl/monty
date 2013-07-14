@@ -41,11 +41,16 @@ class MontysHeartClient(RestfulClient):
         b64_data = open(file, "rb").read().encode("base64")
 
         #print b64_data
-        params.data = {
-            "filename": filename,
-            "content": b64_data,
-            "checksum": checksum,
-        }
+        params[u'data'] = "{}::{}::{}".format(filename, checksum, b64_data)
+        #params[u'data'] = {
+        #    u"filename": filename,
+        #    u"content": b64_data,
+        #    u"checksum": checksum,
+        #}
+
+        print params
+        import json
+        print json.dumps(params)
 
         success = self.put(path, params=params)
 
