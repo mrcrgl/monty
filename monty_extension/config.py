@@ -11,8 +11,6 @@ class MontyCliExtension(BasicExtension):
     namespace = "config"
     config = None
 
-    commands = {}
-
     def __init__(self):
         self.commands = {
             "show": self.show,
@@ -22,18 +20,23 @@ class MontyCliExtension(BasicExtension):
         }
 
     def route(self, args):
-        config_name = args[0]
 
         try:
-            config_action = args[1]
+            config_name = args[0]
         except IndexError:
-            config_action = 'show'
+            return self.error("Missing arguments.")
             pass
 
         try:
             self.config = get_cfg(config_name)
         except NotImplementedError:
             return self.error("Config '"+config_name+"' cannot be found.")
+
+        try:
+            config_action = args[1]
+        except IndexError:
+            config_action = 'show'
+            pass
 
         if config_action in self.commands:
             return self.commands[config_action](args[1:])
@@ -50,7 +53,7 @@ class MontyCliExtension(BasicExtension):
         try:
             key = args[1]
         except IndexError:
-            return self._error("key wroing....")
+            return self.error("key wroing....")
 
         del config[key]
         self.config.write(config)
@@ -65,7 +68,7 @@ class MontyCliExtension(BasicExtension):
         try:
             key, value = args[1:]
         except IndexError:
-            return self._error("key value wroing....")
+            return self.error("key value wroing....")
 
         config[key] = value
         self.config.write(config)
@@ -80,16 +83,9 @@ class MontyCliExtension(BasicExtension):
         try:
             key = args[1]
         except IndexError:
-            return self._error("key wroing....")
+            return self.error("key wroing....")
 
         if key in config:
             return StdOutput.write(config[key])
 
         return None
-
-    def _error(self, message):
-        StdOutput.write(message)
-        self.help()
-
-    def _help(self):
-        StdOutput.write("Some help.... bla bla")

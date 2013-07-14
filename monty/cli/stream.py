@@ -1,4 +1,5 @@
 __author__ = 'riegel'
+import getpass
 
 
 class StdInput:
@@ -6,8 +7,13 @@ class StdInput:
     Foo
     """
     @staticmethod
-    def read():
-        return ""
+    def read(prompt):
+        return raw_input(prompt)
+
+    @staticmethod
+    def read_password(prompt='Password: '):
+        return getpass.getpass(prompt)
+
 
 class StdOutput:
     """
@@ -16,6 +22,14 @@ class StdOutput:
     @staticmethod
     def write(message):
         print(message)
+
+    @staticmethod
+    def activity(type, code, message, status=None):
+        if status:
+            print ("%s - %d - [%s] %s" % (type, status, code, message))
+        else:
+            print ("%s - [%s] %s" % (type, code, message))
+
 
 class StdError:
     """
