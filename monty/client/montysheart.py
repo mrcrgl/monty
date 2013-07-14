@@ -35,7 +35,18 @@ class MontysHeartClient(RestfulClient):
         success = self.put(path, params=params)
         return success
 
-    def package_commit(self, params):
+    def package_commit(self, params, file, filename, checksum):
         path = '/py/package/commit'
+
+        b64_data = open(file, "rb").read().encode("base64")
+
+        #print b64_data
+        params.data = {
+            "filename": filename,
+            "content": b64_data,
+            "checksum": checksum,
+        }
+
         success = self.put(path, params=params)
+
         return success
